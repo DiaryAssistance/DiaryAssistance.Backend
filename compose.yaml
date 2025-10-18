@@ -1,0 +1,7 @@
+﻿services:
+  diaryassistance.api:
+    image: diaryassistance.api
+    build:
+      context: .
+      dockerfile: src/DiaryAssistance.Api/Dockerfile
+
