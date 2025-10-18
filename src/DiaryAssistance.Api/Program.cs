@@ -14,6 +14,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
+await app.Migrate();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

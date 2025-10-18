@@ -1,15 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DiaryAssistance.Application\DiaryAssistance.Application.csproj" />
-    <ProjectReference Include="..\DiaryAssistance.Core\DiaryAssistance.Core.csproj" />
-    <ProjectReference Include="..\DiaryAssistance.Persistence\DiaryAssistance.Persistence.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\DiaryAssistance.Application\DiaryAssistance.Application.csproj"/>
+        <ProjectReference Include="..\DiaryAssistance.Core\DiaryAssistance.Core.csproj"/>
+        <ProjectReference Include="..\DiaryAssistance.Persistence\DiaryAssistance.Persistence.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.10"/>
+    </ItemGroup>
 
 </Project>

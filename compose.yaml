@@ -1,7 +1,32 @@
 ﻿services:
-  diaryassistance.api:
+  diaryassistance_api:
+    container_name: diaryassistance_api
     image: diaryassistance.api
     build:
       context: .
       dockerfile: src/DiaryAssistance.Api/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=diaryassistance_db;Port=5432;Database=diaryassistanceDb;User Id=postgres;Password=root;Include Error Detail=true"
+    depends_on:
+      diaryassistance_db:
+        condition: service_healthy
 
+  diaryassistance_db:
+    container_name: diaryassistance_db
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: diaryassistanceDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db_data:
