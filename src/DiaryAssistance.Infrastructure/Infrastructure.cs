@@ -1,5 +1,8 @@
-﻿using DiaryAssistance.Core.Consants;
+﻿using DiaryAssistance.Application.Options;
+using DiaryAssistance.Application.Services;
+using DiaryAssistance.Core.Consants;
 using DiaryAssistance.Core.Entities;
+using DiaryAssistance.Infrastructure.Services;
 using DiaryAssistance.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +19,10 @@ public static class Infrastructure
         services
             .AddIdentity<User, IdentityRole<Guid>>()
             .AddEntityFrameworkStores<AppDbContext>();
+        
+        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+
+        services.AddTransient<ITokenGenerator, TokenGenerator>();
         
         return services;
     }
