@@ -1,9 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36401.2 d17.14
+VisualStudioVersion = 17.14.36401.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiaryAssistance.Api", "src\DiaryAssistance.Api\DiaryAssistance.Api.csproj", "{B6D4BA21-E928-4B70-8B6A-476F4BB08945}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiaryAssistance.Core", "src\DiaryAssistance.Core\DiaryAssistance.Core.csproj", "{DF102010-E2C9-4902-A6A8-0581CEEA2558}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiaryAssistance.Application", "src\DiaryAssistance.Application\DiaryAssistance.Application.csproj", "{9C0FB85C-8678-413D-818D-C311BE50D1E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiaryAssistance.Infrastructure", "src\DiaryAssistance.Infrastructure\DiaryAssistance.Infrastructure.csproj", "{2418F963-33F5-462B-85F6-8D7DBFDDFD45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiaryAssistance.Persistence", "src\DiaryAssistance.Persistence\DiaryAssistance.Persistence.csproj", "{5351DFC4-7656-498E-8E55-94AAB84E99BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,22 @@ Global
 		{B6D4BA21-E928-4B70-8B6A-476F4BB08945}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6D4BA21-E928-4B70-8B6A-476F4BB08945}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6D4BA21-E928-4B70-8B6A-476F4BB08945}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF102010-E2C9-4902-A6A8-0581CEEA2558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF102010-E2C9-4902-A6A8-0581CEEA2558}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF102010-E2C9-4902-A6A8-0581CEEA2558}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF102010-E2C9-4902-A6A8-0581CEEA2558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C0FB85C-8678-413D-818D-C311BE50D1E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C0FB85C-8678-413D-818D-C311BE50D1E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C0FB85C-8678-413D-818D-C311BE50D1E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C0FB85C-8678-413D-818D-C311BE50D1E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2418F963-33F5-462B-85F6-8D7DBFDDFD45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2418F963-33F5-462B-85F6-8D7DBFDDFD45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2418F963-33F5-462B-85F6-8D7DBFDDFD45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2418F963-33F5-462B-85F6-8D7DBFDDFD45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5351DFC4-7656-498E-8E55-94AAB84E99BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5351DFC4-7656-498E-8E55-94AAB84E99BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5351DFC4-7656-498E-8E55-94AAB84E99BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5351DFC4-7656-498E-8E55-94AAB84E99BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

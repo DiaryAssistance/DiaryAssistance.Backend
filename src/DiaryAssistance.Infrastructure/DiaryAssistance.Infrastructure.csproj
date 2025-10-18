@@ -1,23 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DiaryAssistance.Application\DiaryAssistance.Application.csproj" />
     <ProjectReference Include="..\DiaryAssistance.Core\DiaryAssistance.Core.csproj" />
-    <ProjectReference Include="..\DiaryAssistance.Infrastructure\DiaryAssistance.Infrastructure.csproj" />
     <ProjectReference Include="..\DiaryAssistance.Persistence\DiaryAssistance.Persistence.csproj" />
   </ItemGroup>
 
