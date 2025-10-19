@@ -3,6 +3,7 @@ using System;
 using DiaryAssistance.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DiaryAssistance.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251019135302_RenameCreateAtRefreshToken")]
+    partial class RenameCreateAtRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,7 +32,9 @@ namespace DiaryAssistance.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("Expires")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasDefaultValue(new DateTime(2025, 10, 19, 13, 53, 1, 888, DateTimeKind.Utc).AddTicks(9062))
                         .HasColumnName("Expires");
 
                     b.Property<string>("Token")
