@@ -5,9 +5,12 @@ using DiaryAssistance.Infrastructure;
 using DiaryAssistance.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddJsonFile("SerilogConfig.json", optional: false);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -35,13 +38,18 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
 });
 
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-app.UseExceptionHandler();
-
 await app.Migrate();
+
+app.UseSerilogRequestLogging();
+
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
