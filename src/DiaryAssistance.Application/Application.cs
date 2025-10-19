@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using DiaryAssistance.Application.Behaviors;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,7 @@ public static class Application
         {
             opts.RegisterServicesFromAssembly(typeof(Application).Assembly);
             opts.LicenseKey = configuration["MediatrLicenseKey"];
+            opts.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
         return services;
     }
