@@ -9,12 +9,12 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
     public void Configure(EntityTypeBuilder<RefreshToken> builder)
     {
         builder.HasKey(x => x.Id);
-        
+
         builder
             .HasOne(r => r.User)
             .WithMany(u => u.RefreshTokens)
             .HasForeignKey(r => r.UserId);
-        
+
         builder
             .Property(x => x.Token)
             .IsRequired()
@@ -24,5 +24,9 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
             .Property(x => x.Expires)
             .HasColumnName("Expires")
             .IsRequired();
+
+        builder
+            .HasIndex(x => x.Token)
+            .IsUnique();
     }
 }

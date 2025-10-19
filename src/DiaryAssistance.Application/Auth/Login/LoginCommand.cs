@@ -1,4 +1,5 @@
 ﻿using DiaryAssistance.Application.Auth.Models;
+using DiaryAssistance.Application.Options;
 using DiaryAssistance.Application.Services;
 using DiaryAssistance.Core.Entities;
 using DiaryAssistance.Core.Exceptions;
@@ -34,13 +35,14 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, TokensResponse>
             throw new BrokenRulesException($"Password for user with username: {request.Username} is incorrect");
 
         var accessToken = await _tokenGenerator.GenerateAccessToken(user);
-        var refreshToken = _tokenGenerator.GenerateRefreshToken();
+        var refreshToken = new RefreshToken
+        {
+            UserId = user.Id, Token = _tokenGenerator.GenerateRefreshToken(), Expires = DateTime.UtcNow.AddDays(JwtSettings.RefreshTokenExpirationDays)
+        };
 
-        var refreshTokenRow = new RefreshToken { UserId = user.Id, Token = refreshToken, Expires = DateTime.UtcNow.AddMonths(1) };
-
-        _dbContext.RefreshTokens.Add(refreshTokenRow);
+        _dbContext.RefreshTokens.Add(refreshToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return new TokensResponse(accessToken, refreshToken);
+        return new TokensResponse(accessToken, refreshToken.Token);
     }
 }
