@@ -28,16 +28,16 @@ public class TokenGenerator : ITokenGenerator
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(_jwtSettings.Key);
 
-        var claims = new List<Claim>
-        {
+        var userRoles = await _userManager.GetRolesAsync(user);
+
+        List<Claim> claims =
+        [
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Sub, user.Email!),
             new(JwtRegisteredClaimNames.Email, user.Email!),
-            new(ApplicationClaimTypes.UserId, user.Id.ToString())
-        };
-
-        if (await _userManager.IsInRoleAsync(user, Roles.Admin))
-            claims.Add(new Claim(ApplicationClaimTypes.IsAdmin, true.ToString()));
+            new(ApplicationClaimTypes.UserId, user.Id.ToString()),
+            ..userRoles.Select(r => new Claim(ClaimTypes.Role, r))
+        ];
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {

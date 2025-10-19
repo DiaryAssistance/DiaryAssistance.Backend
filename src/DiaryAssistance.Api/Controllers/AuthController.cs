@@ -4,6 +4,7 @@ using DiaryAssistance.Application.Auth.Models;
 using DiaryAssistance.Application.Auth.Refresh;
 using DiaryAssistance.Application.Auth.Register;
 using DiaryAssistance.Application.Auth.SignOut;
+using DiaryAssistance.Core.Consants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,7 @@ public class AuthController : BaseController
     }
 
     [HttpPost(Routes.V1.Auth.Register)]
-    [Authorize]
+    [Authorize(Roles = Roles.Admin)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
