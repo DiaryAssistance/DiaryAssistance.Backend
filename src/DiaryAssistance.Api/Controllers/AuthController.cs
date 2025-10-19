@@ -2,8 +2,10 @@
 using DiaryAssistance.Application.Auth.Models;
 using DiaryAssistance.Application.Auth.Refresh;
 using DiaryAssistance.Application.Auth.Register;
+using DiaryAssistance.Application.Auth.SignOut;
+using DiaryAssistance.Core.Consants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace DiaryAssistance.Api.Controllers;
 
@@ -32,6 +34,15 @@ public class AuthController : BaseController
     [ProducesResponseType<TokensResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Refresh([FromBody] RefreshCommand request, CancellationToken cancellationToken)
+    {
+        return Ok(await Mediator.Send(request, cancellationToken));
+    }
+
+    [HttpPost("/sign-out")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SignOut([FromBody] SignOutCommand request, CancellationToken cancellationToken)
     {
         return Ok(await Mediator.Send(request, cancellationToken));
     }
