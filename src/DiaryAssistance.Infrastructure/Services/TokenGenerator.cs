@@ -22,7 +22,7 @@ public class TokenGenerator : ITokenGenerator
         _userManager = userManager;
         _jwtSettings = jwtSettings.Value;
     }
-    
+
     public async Task<string> GenerateAccessToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -33,12 +33,12 @@ public class TokenGenerator : ITokenGenerator
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Sub, user.Email!),
             new(JwtRegisteredClaimNames.Email, user.Email!),
-            new("userid", user.Id.ToString())
+            new(ApplicationClaimTypes.UserId, user.Id.ToString())
         };
-        
+
         if (await _userManager.IsInRoleAsync(user, Roles.Admin))
-            claims.Add(new Claim("isAdmin", true.ToString()));
-            
+            claims.Add(new Claim(ApplicationClaimTypes.IsAdmin, true.ToString()));
+
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
@@ -47,19 +47,16 @@ public class TokenGenerator : ITokenGenerator
             Audience = _jwtSettings.Audience,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
-        
+
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        
+
         var jwt = tokenHandler.WriteToken(token);
-        
+
         return jwt;
     }
 
     public string GenerateRefreshToken()
     {
-        var randomNumber = new byte[32];
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(randomNumber);
-        return Convert.ToBase64String(randomNumber);
+        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
     }
 }
