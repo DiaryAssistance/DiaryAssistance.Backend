@@ -8,4 +8,5 @@ public class User : IdentityUser<Guid>
     public string LastName { get; set; } = string.Empty;
     public string Group { get; set; } = string.Empty;
     public ICollection<RefreshToken> RefreshTokens { get; set; } = [];
+    public ICollection<Schedule> Schedules { get; set; }
 }
