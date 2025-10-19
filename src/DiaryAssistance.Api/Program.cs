@@ -1,3 +1,4 @@
+using DiaryAssistance.Api.Middlewares;
 using DiaryAssistance.Application;
 using DiaryAssistance.Infrastructure;
 using DiaryAssistance.Persistence;
@@ -12,7 +13,12 @@ builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 await app.Migrate();
 
