@@ -22,25 +22,25 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, TokensResponse>
         _tokenGenerator = tokenGenerator;
         _dbContext = dbContext;
     }
+
     public async Task<TokensResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByNameAsync(request.Username);
 
         if (user is null)
             throw new NotFoundException($"User with username: {request.Username} not found");
-        
+
         if (!await _userManager.CheckPasswordAsync(user, request.Password))
             throw new BrokenRulesException($"Password for user with username: {request.Username} is incorrect");
-        
+
         var accessToken = await _tokenGenerator.GenerateAccessToken(user);
         var refreshToken = _tokenGenerator.GenerateRefreshToken();
 
-        var refreshTokenRow = new RefreshToken { UserId = user.Id, Token = refreshToken, };
-        
+        var refreshTokenRow = new RefreshToken { UserId = user.Id, Token = refreshToken, Expires = DateTime.UtcNow.AddMonths(1) };
+
         _dbContext.RefreshTokens.Add(refreshTokenRow);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        
+
         return new TokensResponse(accessToken, refreshToken);
     }
 }
-
