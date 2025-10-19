@@ -16,4 +16,9 @@
     <PackageReference Include="MediatR" Version="13.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Auth\Refresh\" />
+    <Folder Include="Auth\SignOut\" />
+  </ItemGroup>
+
 </Project>

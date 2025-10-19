@@ -22,7 +22,7 @@ public static class Infrastructure
         
         services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
 
-        services.AddTransient<ITokenGenerator, TokenGenerator>();
+        services.AddScoped<ITokenGenerator, TokenGenerator>();
         
         return services;
     }

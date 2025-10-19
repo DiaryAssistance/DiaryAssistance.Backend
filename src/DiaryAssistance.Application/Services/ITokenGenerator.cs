@@ -4,6 +4,6 @@ namespace DiaryAssistance.Application.Services;
 
 public interface ITokenGenerator
 {
-    string GenerateAccessToken(User user);
+    Task<string> GenerateAccessToken(User user);
     string GenerateRefreshToken(); 
 }

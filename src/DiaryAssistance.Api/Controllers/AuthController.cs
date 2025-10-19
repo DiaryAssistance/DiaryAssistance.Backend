@@ -10,6 +10,8 @@ namespace DiaryAssistance.Api.Controllers;
 public class AuthController : BaseController
 {
     [HttpPost("/login")]
+    [ProducesResponseType<TokensResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login(LoginCommand request, CancellationToken cancellationToken)
     {
         return Ok(await Mediator.Send(request, cancellationToken));

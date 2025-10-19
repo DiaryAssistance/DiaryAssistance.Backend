@@ -7,6 +7,7 @@ namespace DiaryAssistance.Persistence;
 
 public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }

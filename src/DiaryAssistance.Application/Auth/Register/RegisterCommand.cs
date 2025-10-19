@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DiaryAssistance.Application.Auth.Register;
 
-public record RegisterCommand(string FirstName, string LastName, string Email, string Password, string Group, string? Role) : IRequest<UserResponse>;
+public record RegisterCommand(string FirstName, string LastName, string Email, string Username,string Password, string Group, string? Role) : IRequest<UserResponse>;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserResponse>
 {
@@ -21,12 +21,12 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserRespo
 
     public async Task<UserResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        if (await _userManager.FindByNameAsync(request.Email) is not null)
-            throw new InvalidOperationException($"User with email: {request.Email} already exists.");
+        if (await _userManager.FindByNameAsync(request.Username) is not null)
+            throw new InvalidOperationException($"User with username: {request.Username} already exists.");
 
         var user = new User
         {
-            UserName = request.Email,
+            UserName = request.Username,
             FirstName = request.FirstName,
             LastName = request.LastName,
             Group = request.Group,
@@ -56,6 +56,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserRespo
         }
 
         await transaction.CommitAsync(cancellationToken);
-        return new UserResponse($"{user.FirstName} {user.LastName}", user.Email, user.Group);
+        return new UserResponse($"{user.FirstName} {user.LastName}", user.UserName,user.Email, user.Group);
     }
 }

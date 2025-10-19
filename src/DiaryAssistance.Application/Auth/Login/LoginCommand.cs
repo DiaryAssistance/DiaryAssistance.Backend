@@ -1,15 +1,46 @@
 ﻿using DiaryAssistance.Application.Auth.Models;
+using DiaryAssistance.Application.Services;
+using DiaryAssistance.Core.Entities;
+using DiaryAssistance.Core.Exceptions;
+using DiaryAssistance.Persistence;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace DiaryAssistance.Application.Auth.Login;
 
-public record LoginCommand(string Email, string Password) : IRequest<TokensResponse>;
+public record LoginCommand(string Username, string Password) : IRequest<TokensResponse>;
 
 public class LoginCommandHandler : IRequestHandler<LoginCommand, TokensResponse>
 {
+    private readonly UserManager<User> _userManager;
+    private readonly ITokenGenerator _tokenGenerator;
+    private readonly AppDbContext _dbContext;
+
+    public LoginCommandHandler(UserManager<User> userManager, ITokenGenerator tokenGenerator, AppDbContext dbContext)
+    {
+        _userManager = userManager;
+        _tokenGenerator = tokenGenerator;
+        _dbContext = dbContext;
+    }
     public async Task<TokensResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        return new TokensResponse("", "");
+        var user = await _userManager.FindByNameAsync(request.Username);
+
+        if (user is null)
+            throw new NotFoundException($"User with username: {request.Username} not found");
+        
+        if (!await _userManager.CheckPasswordAsync(user, request.Password))
+            throw new BrokenRulesException($"Password for user with username: {request.Username} is incorrect");
+        
+        var accessToken = await _tokenGenerator.GenerateAccessToken(user);
+        var refreshToken = _tokenGenerator.GenerateRefreshToken();
+
+        var refreshTokenRow = new RefreshToken { UserId = user.Id, Token = refreshToken, };
+        
+        _dbContext.RefreshTokens.Add(refreshTokenRow);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        
+        return new TokensResponse(accessToken, refreshToken);
     }
 }
 
