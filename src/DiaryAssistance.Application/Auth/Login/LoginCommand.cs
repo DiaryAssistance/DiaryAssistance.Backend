@@ -28,11 +28,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, TokensResponse>
     {
         var user = await _userManager.FindByNameAsync(request.Username);
 
-        if (user is null)
-            throw new NotFoundException($"User with username: {request.Username} not found");
-
-        if (!await _userManager.CheckPasswordAsync(user, request.Password))
-            throw new BrokenRulesException($"Password for user with username: {request.Username} is incorrect");
+        if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
+            throw new BrokenRulesException("Failed to authenticate user");
 
         var accessToken = await _tokenGenerator.GenerateAccessToken(user);
         var refreshToken = new RefreshToken
