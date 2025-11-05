@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DiaryAssistance.Api.Controllers;
 
 [Route(Routes.V1.Auth.BaseAuthRoute)]
-public class AuthController : BaseController
+public class Auth : ApiControllerBase
 {
     [HttpPost(Routes.V1.Auth.Login)]
     [ProducesResponseType<TokensResponse>(StatusCodes.Status200OK)]

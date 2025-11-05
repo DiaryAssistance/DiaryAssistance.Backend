@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DiaryAssistance.Api.Controllers;
 
 [ApiController]
-public abstract class BaseController : ControllerBase
+public abstract class ApiControllerBase : ControllerBase
 {
     private IMediator? _mediator;
 
