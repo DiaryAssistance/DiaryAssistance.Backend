@@ -26,7 +26,7 @@ public class SignOutCommandHandler : IRequestHandler<SignOutCommand, Unit>
     public async Task<Unit> Handle(SignOutCommand request, CancellationToken cancellationToken)
     {
         if (_httpContextAccessor.HttpContext is null)
-            throw new InvalidOperationException("HttpContext is null");
+            throw new InternalServerException("HttpContext is null. This is an internal server error.");
 
         var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
 
@@ -40,6 +40,6 @@ public class SignOutCommandHandler : IRequestHandler<SignOutCommand, Unit>
         else
             deleted = await _dbContext.RefreshTokens.Where(t => t.UserId == user.Id && t.Token == request.RefreshToken).ExecuteDeleteAsync(cancellationToken);
 
-        return deleted == 0 ? throw new InvalidOperationException("RefreshToken not found") : Unit.Value;
+        return deleted == 0 ? throw new BadRequestException("Refresh token not found or already invalidated.") : Unit.Value;
     }
 }

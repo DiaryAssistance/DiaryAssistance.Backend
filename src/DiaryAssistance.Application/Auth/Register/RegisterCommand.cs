@@ -1,6 +1,7 @@
 ﻿using DiaryAssistance.Application.Auth.Models;
 using DiaryAssistance.Core.Constants;
 using DiaryAssistance.Core.Entities;
+using DiaryAssistance.Core.Exceptions;
 using DiaryAssistance.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +24,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserRespo
     public async Task<UserResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         if (await _userManager.FindByNameAsync(request.Username) is not null)
-            throw new InvalidOperationException($"User with username: {request.Username} already exists.");
+            throw new ConflictException($"User with username '{request.Username}' already exists.");
 
         var user = new User
         {
@@ -40,8 +41,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserRespo
         if (!registerResult.Succeeded)
         {
             await transaction.RollbackAsync(cancellationToken);
-            var errorString = string.Join(',', registerResult.Errors.Select(c => c.Description));
-            throw new InvalidOperationException($"Failed to create user. Errors: {errorString}");
+            var errors = new Dictionary<string, string[]>
+            {
+                ["Identity"] = registerResult.Errors.Select(e => e.Description).ToArray()
+            };
+            throw new BadRequestException("Failed to create user.", errors);
         }
 
         if (request.Role is not null)
@@ -50,8 +54,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserRespo
             if (!addToRoleResult.Succeeded)
             {
                 await transaction.RollbackAsync(cancellationToken);
-                var errorString = string.Join(',', registerResult.Errors.Select(c => c.Description));
-                throw new InvalidOperationException($"Failed to add user to role: {request.Role}. Errors: {errorString}");
+                var errors = new Dictionary<string, string[]>
+                {
+                    ["Role"] = addToRoleResult.Errors.Select(e => e.Description).ToArray()
+                };
+                throw new BadRequestException($"Failed to add user to role '{request.Role}'.", errors);
             }
         }
         else
@@ -60,8 +67,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserRespo
             if (!addToRoleResult.Succeeded)
             {
                 await transaction.RollbackAsync(cancellationToken);
-                var errorString = string.Join(',', registerResult.Errors.Select(c => c.Description));
-                throw new InvalidOperationException($"Failed to add user to role: {Roles.Student}. Errors: {errorString}");
+                var errors = new Dictionary<string, string[]>
+                {
+                    ["Role"] = addToRoleResult.Errors.Select(e => e.Description).ToArray()
+                };
+                throw new BadRequestException($"Failed to add user to role '{Roles.Student}'.", errors);
             }
         }
 
