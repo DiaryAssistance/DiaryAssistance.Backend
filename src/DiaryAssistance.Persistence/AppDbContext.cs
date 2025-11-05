@@ -8,6 +8,10 @@ namespace DiaryAssistance.Persistence;
 public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<Group> Groups { get; set; }
+    public DbSet<Subject> Subjects { get; set; }
+    public DbSet<Schedule> Schedules { get; set; }
+
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
