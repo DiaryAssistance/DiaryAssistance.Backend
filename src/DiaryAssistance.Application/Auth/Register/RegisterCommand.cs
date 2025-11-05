@@ -1,4 +1,5 @@
 ﻿using DiaryAssistance.Application.Auth.Models;
+using DiaryAssistance.Core.Consants;
 using DiaryAssistance.Core.Entities;
 using DiaryAssistance.Persistence;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DiaryAssistance.Application.Auth.Register;
 
-public record RegisterCommand(string FirstName, string LastName, string Email, string Username,string Password, string Group, string? Role) : IRequest<UserResponse>;
+public record RegisterCommand(string FirstName, string LastName, string Email, string Username,string Password, string? Role) : IRequest<UserResponse>;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserResponse>
 {
@@ -29,7 +30,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserRespo
             UserName = request.Username,
             FirstName = request.FirstName,
             LastName = request.LastName,
-            Group = request.Group,
             Email = request.Email
         };
 
@@ -54,8 +54,18 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserRespo
                 throw new InvalidOperationException($"Failed to add user to role: {request.Role}. Errors: {errorString}");
             }
         }
+        else
+        {
+            var addToRoleResult = await _userManager.AddToRoleAsync(user, Roles.Student);
+            if (!addToRoleResult.Succeeded)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                var errorString = string.Join(',', registerResult.Errors.Select(c => c.Description));
+                throw new InvalidOperationException($"Failed to add user to role: {Roles.Student}. Errors: {errorString}");
+            }
+        }
 
         await transaction.CommitAsync(cancellationToken);
-        return new UserResponse($"{user.FirstName} {user.LastName}", user.UserName,user.Email, user.Group);
+        return new UserResponse($"{user.FirstName} {user.LastName}", user.UserName,user.Email);
     }
 }
