@@ -1,6 +1,6 @@
 ﻿using DiaryAssistance.Application.Options;
 using DiaryAssistance.Application.Services;
-using DiaryAssistance.Core.Consants;
+using DiaryAssistance.Core.Constants;
 using DiaryAssistance.Core.Entities;
 using DiaryAssistance.Infrastructure.Services;
 using DiaryAssistance.Persistence;
@@ -37,8 +37,11 @@ public static class Infrastructure
     
         if (!await roleManager.RoleExistsAsync(Roles.Admin))
             await roleManager.CreateAsync(new IdentityRole<Guid>(Roles.Admin));
-    
+
         if (!await roleManager.RoleExistsAsync(Roles.Teacher))
             await roleManager.CreateAsync(new IdentityRole<Guid>(Roles.Teacher));
+
+        if (!await roleManager.RoleExistsAsync(Roles.Student))
+            await roleManager.CreateAsync(new IdentityRole<Guid>(Roles.Student));
     }
 }

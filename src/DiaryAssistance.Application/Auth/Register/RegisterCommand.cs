@@ -1,5 +1,5 @@
 ﻿using DiaryAssistance.Application.Auth.Models;
-using DiaryAssistance.Core.Consants;
+using DiaryAssistance.Core.Constants;
 using DiaryAssistance.Core.Entities;
 using DiaryAssistance.Persistence;
 using MediatR;

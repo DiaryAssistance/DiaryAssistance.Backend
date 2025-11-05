@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using DiaryAssistance.Application.Options;
 using DiaryAssistance.Application.Services;
-using DiaryAssistance.Core.Consants;
+using DiaryAssistance.Core.Constants;
 using DiaryAssistance.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;

@@ -4,7 +4,7 @@ using DiaryAssistance.Application.Auth.Models;
 using DiaryAssistance.Application.Auth.Refresh;
 using DiaryAssistance.Application.Auth.Register;
 using DiaryAssistance.Application.Auth.SignOut;
-using DiaryAssistance.Core.Consants;
+using DiaryAssistance.Core.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

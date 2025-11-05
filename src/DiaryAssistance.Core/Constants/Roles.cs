@@ -1,4 +1,4 @@
-﻿namespace DiaryAssistance.Core.Consants;
+﻿namespace DiaryAssistance.Core.Constants;
 
 public static class Roles
 {
