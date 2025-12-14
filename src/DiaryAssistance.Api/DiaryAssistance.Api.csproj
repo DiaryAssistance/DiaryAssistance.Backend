@@ -24,6 +24,9 @@
         <ProjectReference Include="..\DiaryAssistance.Core\DiaryAssistance.Core.csproj"/>
         <ProjectReference Include="..\DiaryAssistance.Infrastructure\DiaryAssistance.Infrastructure.csproj"/>
         <ProjectReference Include="..\DiaryAssistance.Persistence\DiaryAssistance.Persistence.csproj"/>
+        <ProjectReference Include="..\DiaryAssistance.Analyzers\DiaryAssistance.Analyzers.csproj"
+                          OutputItemType="Analyzer"
+                          ReferenceOutputAssembly="false"/>
     </ItemGroup>
 
     <ItemGroup>
